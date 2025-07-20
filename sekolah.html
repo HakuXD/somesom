@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>What Should I Wear This Friday?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 50px 20px;
+      background: #f0f4f8;
+    }
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 12px #ccc;
+      display: inline-block;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+    .result {
+      font-size: 28px;
+      font-weight: bold;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>What Should I Wear This Friday?</h1>
+    <div class="result" id="result">Loading...</div>
+  </div>
+
+  <script>
+    function getFridays(year, month) {
+      let fridays = [];
+      let date = new Date(year, month - 1, 1);
+      while (date.getMonth() === month - 1) {
+        if (date.getDay() === 5) { // Friday
+          fridays.push(new Date(date));
+        }
+        date.setDate(date.getDate() + 1);
+      }
+      return fridays;
+    }
+
+    function findThisWeekFriday() {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const fridays = getFridays(year, month);
+
+      // Find the next Friday >= today
+      let thisFriday = null;
+      for (let i = 0; i < fridays.length; i++) {
+        if (fridays[i] >= today) {
+          thisFriday = fridays[i];
+          const index = i + 1; // 1st, 2nd, ...
+          const outfit = index % 2 === 1 ? "Batik 👔" : "Sadariah 🧥";
+          const resultText = `This Friday (${thisFriday.toDateString()}): ${outfit}`;
+          document.getElementById("result").textContent = resultText;
+          return;
+        }
+      }
+
+      document.getElementById("result").textContent = "No more Fridays this month!";
+    }
+
+    window.onload = findThisWeekFriday;
+  </script>
+</body>
+</html>
